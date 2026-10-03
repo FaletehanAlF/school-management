@@ -16,12 +16,14 @@
     "dotenv": "^16.4.5",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
     "mysql2": "^3.24.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/multer": "^2.3.0",
     "@types/node": "^26.6.3",
     "tsx": "^4.19.2",
     "typescript": "^7.0.2"

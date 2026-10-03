@@ -7,6 +7,7 @@ import express, {
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
 import announcementRoutes from "./routes/announcementRoutes";
+import uploadRoutes from "./routes/uploadRoutes";
 
 const app: Application = express();
 
@@ -19,5 +20,6 @@ app.get("/", (_req: Request, res: Response) => {
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/announcements", announcementRoutes);
+app.use("/upload", uploadRoutes);
 
 export default app;
