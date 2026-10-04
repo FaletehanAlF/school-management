@@ -24,10 +24,26 @@ export function testTeacherAccess(req: AuthRequest, res: Response) {
   });
 }
 
-// GET /users/me - kembalikan id dan role dari token (tanpa query database)
-export function getMe(req: AuthRequest, res: Response) {
-  res.status(200).json({
-    message: 'Token valid',
-    user: req.user,
-  });
+// GET /users/me - ambil profile user yang sedang login dari database
+export async function getMe(req: AuthRequest, res: Response) {
+  try {
+    const userId = req.user?.id;
+
+    const [rows]: any = await db.query(
+      'SELECT id, name, email, role, profile_image, created_at FROM users WHERE id = ?',
+      [userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        message: 'User tidak ditemukan',
+      });
+    }
+
+    res.status(200).json(rows[0]);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal mengambil profile user',
+    });
+  }
 }
