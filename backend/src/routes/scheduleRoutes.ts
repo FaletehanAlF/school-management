@@ -1,5 +1,5 @@
 import express from 'express';
-import { getSchedules, getScheduleById, createSchedule } from '../controllers/scheduleController';
+import { getSchedules, getScheduleById, createSchedule, updateSchedule } from '../controllers/scheduleController';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { authorizeRole } from '../middleware/roleMiddleware';
 
@@ -9,5 +9,7 @@ router.get('/', getSchedules);
 router.get('/:id', getScheduleById);
 
 router.post('/', authMiddleware, authorizeRole('teacher'), createSchedule);
+
+router.put('/:id', authMiddleware, authorizeRole('teacher'), updateSchedule);
 
 export default router;

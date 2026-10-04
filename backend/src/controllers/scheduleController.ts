@@ -61,3 +61,41 @@ export async function createSchedule(req: Request, res: Response) {
     });
   }
 }
+
+export async function updateSchedule(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const { class_name, subject, teacher, day, start_time, end_time } = req.body;
+
+    if (!class_name || !subject || !teacher || !day || !start_time || !end_time) {
+      return res.status(400).json({
+        message: 'Semua field jadwal wajib diisi',
+      });
+    }
+
+    const [existing]: any = await db.query(
+      'SELECT id FROM schedules WHERE id = ?',
+      [id]
+    );
+
+    if (existing.length === 0) {
+      return res.status(404).json({
+        message: 'Jadwal tidak ditemukan',
+      });
+    }
+
+    await db.query(
+      'UPDATE schedules SET class_name = ?, subject = ?, teacher = ?, day = ?, start_time = ?, end_time = ? WHERE id = ?',
+      [class_name, subject, teacher, day, start_time, end_time, id]
+    );
+
+    res.status(200).json({
+      message: 'Jadwal berhasil diperbarui',
+      id: Number(id),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal memperbarui jadwal',
+    });
+  }
+}
