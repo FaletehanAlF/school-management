@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import db from '../database';
+import cloudinary from '../config/cloudinary';
 
 export async function getAnnouncements(_req: Request, res: Response) {
   try {
@@ -15,7 +16,7 @@ export async function getAnnouncements(_req: Request, res: Response) {
 
 export async function createAnnouncement(req: Request, res: Response) {
   try {
-    const { title, content, cover_url } = req.body;
+    const { title, content } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({
@@ -23,9 +24,22 @@ export async function createAnnouncement(req: Request, res: Response) {
       });
     }
 
+    let coverUrl = null;
+
+    if (req.file) {
+      const dataUri = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+      const result = await cloudinary.uploader.upload(dataUri, {
+        folder: 'school-management/announcements',
+        resource_type: 'image',
+      });
+
+      coverUrl = result.secure_url;
+    }
+
     const [result]: any = await db.query(
       'INSERT INTO announcements (title, content, cover_url) VALUES (?, ?, ?)',
-      [title, content, cover_url || null]
+      [title, content, coverUrl]
     );
 
     res.status(201).json({
