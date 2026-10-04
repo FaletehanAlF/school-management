@@ -35,3 +35,29 @@ export async function getScheduleById(req: Request, res: Response) {
     });
   }
 }
+
+export async function createSchedule(req: Request, res: Response) {
+  try {
+    const { class_name, subject, teacher, day, start_time, end_time } = req.body;
+
+    if (!class_name || !subject || !teacher || !day || !start_time || !end_time) {
+      return res.status(400).json({
+        message: 'Semua field jadwal wajib diisi',
+      });
+    }
+
+    const [result]: any = await db.query(
+      'INSERT INTO schedules (class_name, subject, teacher, day, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?)',
+      [class_name, subject, teacher, day, start_time, end_time]
+    );
+
+    res.status(201).json({
+      message: 'Jadwal berhasil dibuat',
+      id: result.insertId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Gagal membuat jadwal',
+    });
+  }
+}
