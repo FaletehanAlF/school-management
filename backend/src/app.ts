@@ -9,6 +9,7 @@ import authRoutes from "./routes/authRoutes";
 import announcementRoutes from "./routes/announcementRoutes";
 import uploadRoutes from "./routes/uploadRoutes";
 import scheduleRoutes from "./routes/scheduleRoutes";
+import dashboardRoutes from "./routes/dashboardRoutes";
 
 const app: Application = express();
 
@@ -23,5 +24,6 @@ app.use("/auth", authRoutes);
 app.use("/announcements", announcementRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/schedules", scheduleRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 export default app;
