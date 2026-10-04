@@ -15,6 +15,6 @@ router.get('/me', authMiddleware, getMe);
 // GET /users/teacher-area - hanya untuk role teacher
 router.get('/teacher-area', authMiddleware, authorizeRole('teacher'), testTeacherAccess);
 
-router.get('/', getUsers);
+router.get('/', authMiddleware, authorizeRole('teacher'), getUsers);
 
 export default router;
